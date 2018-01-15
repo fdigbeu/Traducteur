@@ -6,8 +6,10 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
 import android.speech.tts.TextToSpeech;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -38,6 +40,9 @@ import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_COPY_TEXT_I
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_LANGUAGE_ARRIVAL;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_LANGUAGE_DEPARTURE;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_TEXT_TO_TRANSLATE;
+import static lveapp.traducteur.Presenter.Common.CommonPresenter.VALUE_PERMISSION_REQUEST_READ_SMS;
+import static lveapp.traducteur.Presenter.Common.CommonPresenter.VALUE_RECEIVE_HISTORY_TO_CONVERT;
+import static lveapp.traducteur.Presenter.Common.CommonPresenter.VALUE_RECEIVE_SMS_TO_CONVERT;
 
 public class HomeActivity extends AppCompatActivity implements HomeView.IHome, TextToSpeech.OnInitListener{
     // Ref attributes
@@ -87,12 +92,15 @@ public class HomeActivity extends AppCompatActivity implements HomeView.IHome, T
                 break;
             // SMS
             case R.id.action_sms:
+                homePresenter.checkPermissionToReadSMS(HomeActivity.this);
                 break;
             // History
             case R.id.action_history:
+                homePresenter.displayHistoryActivity();
                 break;
             // Share app
             case R.id.action_share_app:
+                homePresenter.shareApplication(HomeActivity.this);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -389,6 +397,20 @@ public class HomeActivity extends AppCompatActivity implements HomeView.IHome, T
     }
 
     @Override
+    public void displaySMSActivity() {
+        Intent intent = new Intent(HomeActivity.this, SMSActivity.class);
+        startActivityForResult(intent, VALUE_RECEIVE_SMS_TO_CONVERT);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+    @Override
+    public void displayHistoryActivity() {
+        Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
+        startActivityForResult(intent, VALUE_RECEIVE_HISTORY_TO_CONVERT);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+    @Override
     public void displayErrorOnEditText(String message){
         traduction_language_1.setError(message);
     }
@@ -417,5 +439,20 @@ public class HomeActivity extends AppCompatActivity implements HomeView.IHome, T
         homePresenter.onActivityDestroyed(textToSpeech_1);
         homePresenter.onActivityDestroyed(textToSpeech_2);
         homePresenter.canceledAsyntask();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == VALUE_PERMISSION_REQUEST_READ_SMS){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                homePresenter.displaySMSActivity();
+            }
+            else{
+                String title = getResources().getString(R.string.lb_required_permission);
+                String message = getResources().getString(R.string.lb_detail_required_sms_permission);
+                homePresenter.displayDialogMessage(HomeActivity.this, title, message);
+            }
+        }
     }
 }

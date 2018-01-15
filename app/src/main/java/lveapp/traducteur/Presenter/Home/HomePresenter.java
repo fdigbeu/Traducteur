@@ -1,9 +1,14 @@
 package lveapp.traducteur.Presenter.Home;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.speech.tts.TextToSpeech;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,6 +26,7 @@ import java.util.Locale;
 import lveapp.traducteur.Model.Translation;
 import lveapp.traducteur.Presenter.Common.CommonPresenter;
 import lveapp.traducteur.R;
+import lveapp.traducteur.View.Activities.SMSActivity;
 import lveapp.traducteur.View.Interfaces.HomeView;
 
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_COPY_TEXT_IN_PRESS;
@@ -405,6 +411,7 @@ public class HomePresenter implements HomeView.IPresenter, HomeView.ILoadTransla
     /**
      * Canceled Asyntask
      */
+    @Override
     public void canceledAsyntask(){
         try {
             if(translateAsyntask != null){
@@ -412,5 +419,42 @@ public class HomePresenter implements HomeView.IPresenter, HomeView.ILoadTransla
             }
         }
         catch (Exception ex){}
+    }
+
+    /**
+     * Permission to read SMS
+     */
+    @Override
+    public void checkPermissionToReadSMS(Context context){
+        if(!CommonPresenter.askPermissionToReadSMS(context)){
+            iHome.displaySMSActivity();
+        }
+    }
+
+    /**
+     * Display SMS Activity
+     */
+    @Override
+    public void displaySMSActivity(){
+        iHome.displaySMSActivity();
+    }
+
+    /**
+     * Display History Activity
+     */
+    @Override
+    public void displayHistoryActivity(){
+        iHome.displayHistoryActivity();
+    }
+
+    /**
+     * Share application
+     * @param context
+     */
+    @Override
+    public void shareApplication(Context context) {
+        String title = context.getResources().getString(R.string.lb_share_width);
+        String message = context.getResources().getString(R.string.lb_message_share_app)+"\n\n"+context.getResources().getString(R.string.lb_url_play_store);
+        CommonPresenter.shareApplication(context, title, message);
     }
 }

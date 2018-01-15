@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Traducteur</string>
+    <string name="app_sms_name">Traduction de SMS</string>
+    <string name="app_history_name">Historique des traductions</string>
     <string name="content_description"></string>
     <string name="lb_write_text">Saisissez le texte à traduire</string>
     <string name="lb_say_something">Dites quelque chose</string>
@@ -18,4 +20,9 @@
     <string name="lb_share_app">Partager l\'application</string>
     <string name="lb_sms_traduction">Traduire les SMS</string>
     <string name="lb_hitory_traduction">Historique</string>
+    <string name="lb_required_permission">Permission requise</string>
+    <string name="lb_detail_required_sms_permission">Cette permission permet à l\'application d\'avoir accès à vos SMS.</string>
+    <string name="lb_select_sms_to_translate">Sélectionnez le SMS à traduire</string>
+    <string name="lb_url_play_store">https://play.google.com/store/apps/details?id=lveapp.traducteur</string>
+    <string name="lb_message_share_app">Bonjour,\nJe tiens à te faire découvrir l\'application android Traducteur.\nClique sur le lien qui apparaît en bas de ce message, et n\'hésite pas à en parler autour de toi.</string>
 </resources>

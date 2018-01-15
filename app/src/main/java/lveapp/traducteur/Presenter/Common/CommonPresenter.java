@@ -1,22 +1,28 @@
 package lveapp.traducteur.Presenter.Common;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.text.Html;
+import android.text.format.DateFormat;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Locale;
 
@@ -36,6 +42,12 @@ public class CommonPresenter {
     // key total line to convert and incrementation
     public static final String KEY_TOTAL_LINE_TO_CONVERT = "KEY_TOTAL_LINE_TO_CONVERT";
     public static final String KEY_INCREMENT_LINE_TO_CONVERT = "KEY_INCREMENT_LINE_TO_CONVERT";
+    // value permission to read sms
+    public static final int VALUE_PERMISSION_REQUEST_READ_SMS = 100;
+    // Value to receive selected sms to translate
+    public static final int VALUE_RECEIVE_SMS_TO_CONVERT = 2;
+    // Value to receive selected history to translate
+    public static final int VALUE_RECEIVE_HISTORY_TO_CONVERT = 5;
     // Ref key language
     public static final String KEY_TEXT_TO_TRANSLATE = "KEY_TEXT_TO_TRANSLATE";
     public static final String KEY_LANGUAGE_DEPARTURE = "KEY_LANGUAGE_DEPARTURE";
@@ -200,6 +212,38 @@ public class CommonPresenter {
             editor.commit(); // <=> editor.apply();
         }
         catch (Exception ex){}
+    }
+
+    /**
+     * Change format date : Year - Month - Day
+     * @param date
+     * @return
+     */
+    public static String changeFormatDate(String date){
+        String dateReturn = null;
+        if(date.contains("-")){
+            dateReturn = date.split("-")[2].trim()+"/"+date.split("-")[1].trim()+"/"+date.split("-")[0].trim();
+        }
+        else{
+            try {
+                long longTime = Long.parseLong(date);
+                dateReturn = DateFormat.format("dd/MM/yyyy", new Date(longTime)).toString();
+            }
+            catch (Exception ex){}
+        }
+        return dateReturn;
+    }
+
+    /**
+     * Check permission to read SMS
+     */
+    public static boolean askPermissionToReadSMS(Context context){
+        int permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_SMS);
+        if(permissionCheck != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions((Activity)context, new String[]{Manifest.permission.READ_SMS},VALUE_PERMISSION_REQUEST_READ_SMS);
+            return true;
+        }
+        return false;
     }
 
     private static void buildTextViewToHtmlData(TextView textView, String textValue){

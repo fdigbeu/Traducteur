@@ -6,11 +6,7 @@ import android.speech.tts.TextToSpeech;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
-
-import java.util.ArrayList;
 import java.util.Hashtable;
-
-import lveapp.traducteur.Model.Translation;
 
 /**
  * Created by Maranatha on 13/01/2018.
@@ -42,6 +38,8 @@ public class HomeView {
         public void simulateTranslateButtonClick();
         public void simulateCleanTextButtonClick();
         public void copyTextToClipData(String text);
+        public void displaySMSActivity();
+        public void displayHistoryActivity();
     }
 
     public interface IPresenter{
@@ -53,9 +51,14 @@ public class HomeView {
         public void retrieveBroadcastReceiver(Intent intent);
         public void onStopTextToSpeechReading(TextToSpeech tts);
         public void onActivityDestroyed(TextToSpeech tts);
+        public void canceledAsyntask();
+        public void checkPermissionToReadSMS(Context context);
         public void clearAllTranslatedText();
         public void retrieveTextChangeAction(String textToTranslate, String textTranslated);
         public void retrieveUserAction(int actionId, KeyEvent event, Context context, Hashtable<String, String> values);
+        public void displaySMSActivity();
+        public void displayHistoryActivity();
+        public void shareApplication(Context context);
     }
 
     public interface ILoadTranslation{
