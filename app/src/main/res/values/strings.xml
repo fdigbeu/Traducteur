@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Traducteur</string>
+    <string name="content_description"></string>
+    <string name="lb_write_text">Saisissez le texte à traduire</string>
+    <string name="lb_say_something">Dites quelque chose</string>
+    <string name="lb_fermer">FERMER</string>
+    <string name="lb_unstable_connection">Connexion internet instable</string>
+    <string name="lb_detail_unstable_connection">Les données mobiles sont instables. Vérifiez votre connexion réseau et réessayez.</string>
+    <string name="lb_no_connection">Aucune connexion internet</string>
+    <string name="lb_detail_no_connection">Les données mobiles sont désactivées. Connectez-vous au réseau Wi-Fi à la place ou activez les données mobiles et réessayez.</string>
+    <string name="lb_lang_same">Langues identitiques</string>
+    <string name="lb_detail_lang_same">Vous avez sélectionnez des langues identitiques.</string>
+    <string name="lb_field_required">Ce champ est obligatoire.</string>
+    <string name="lb_share_width">Partager avec :</string>
+    <string name="lb_traduction_copy">Traduction copiée.</string>
+    <string name="lb_launch_traduction">LANCER LA TRADUCTION</string>
+    <string name="lb_text_traduction">Traduction du texte</string>
+    <string name="lb_share_app">Partager l\'application</string>
+    <string name="lb_sms_traduction">Traduire les SMS</string>
+    <string name="lb_hitory_traduction">Historique</string>
+</resources>

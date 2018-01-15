@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="lveapp.traducteur.View.Activities.HomeActivity">
+    <!-- Menu visible -->
+    <item
+        android:id="@+id/action_voice"
+        android:orderInCategory="100"
+        android:title="@string/lb_say_something"
+        android:icon="@drawable/ic_voice_32dp"
+        app:showAsAction="always" />
+    <!-- Menu item : Hidden -->
+    <item
+        android:id="@+id/action_sms"
+        android:title="@string/lb_sms_traduction"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_history"
+        android:title="@string/lb_hitory_traduction"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_share_app"
+        android:title="@string/lb_share_app"
+        app:showAsAction="never"/>
+</menu>

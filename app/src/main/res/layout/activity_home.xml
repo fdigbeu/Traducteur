@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context="lveapp.traducteur.View.Activities.HomeActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Selected language -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/size_5_dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <Spinner
+                    android:id="@+id/language_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/size_5_dp" />
+
+                <ImageButton
+                    android:id="@+id/btn_compare"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:contentDescription="@string/content_description"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/btn_compare_arrows"/>
+
+                <Spinner
+                    android:id="@+id/language_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <!-- Horizontal line -->
+            <TextView
+                android:id="@+id/horizontalLine"
+                style="@style/CustomHorizontalLine"/>
+
+            <!-- Translate language departure -->
+            <LinearLayout
+                android:id="@+id/layout_start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/size_10_dp"
+                android:background="@drawable/ic_border_radius"
+                android:padding="@dimen/size_5_dp"
+                android:orientation="horizontal">
+
+                <!-- Writing text to translate -->
+                <EditText
+                    android:id="@+id/traduction_language_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/size_5_dp"
+                    android:textColor="@color/colorText"
+                    android:gravity="top"
+                    android:inputType="textMultiLine"
+                    android:hint="@string/lb_write_text"
+                    android:textColorHint="@color/colorGray"
+                    android:background="@android:color/transparent"
+                    android:textSize="@dimen/text_size_18_sp"
+                    android:layout_weight="7"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/btn_clean_text"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_margin="@dimen/size_5_dp"
+                        android:contentDescription="@string/content_description"
+                        android:background="@android:color/transparent"
+                        android:visibility="gone"
+                        android:src="@drawable/btn_clear_text"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_read_1"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_margin="@dimen/size_5_dp"
+                        android:contentDescription="@string/content_description"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/btn_volume_up"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_share_1"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_margin="@dimen/size_5_dp"
+                        android:contentDescription="@string/content_description"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/btn_share"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_content_copy_1"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_margin="@dimen/size_5_dp"
+                        android:contentDescription="@string/content_description"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/btn_content_copy"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Button of translation -->
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_radius"
+                android:padding="@dimen/size_10_dp"
+                android:layout_margin="@dimen/size_10_dp"
+                android:textColor="@color/colorAntiqueWhite"
+                android:text="@string/lb_launch_traduction"
+                android:id="@+id/btn_translate"/>
+
+            <!-- Translate language arrival -->
+            <LinearLayout
+                android:id="@+id/layout_end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/size_10_dp"
+                android:background="@drawable/ic_border_radius"
+                android:padding="@dimen/size_10_dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/traduction_language_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/size_5_dp"
+                    android:textColor="@color/colorText"
+                    android:inputType="none"
+                    android:hint="@string/lb_text_traduction"
+                    android:textColorHint="@color/colorGray"
+                    android:background="@android:color/transparent"
+                    android:text="@string/content_description"
+                    android:focusable="false"
+                    android:textSize="@dimen/text_size_18_sp"
+                    android:layout_weight="7"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/btn_read_2"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_margin="@dimen/size_5_dp"
+                        android:contentDescription="@string/content_description"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/btn_volume_up"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_share_2"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_margin="@dimen/size_5_dp"
+                        android:contentDescription="@string/content_description"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/btn_share"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_content_copy_2"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_margin="@dimen/size_5_dp"
+                        android:contentDescription="@string/content_description"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/btn_content_copy"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- ProgressBar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/size_5_dp"
+        android:visibility="gone"/>
+
+</RelativeLayout>
