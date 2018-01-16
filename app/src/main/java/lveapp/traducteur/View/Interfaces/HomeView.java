@@ -25,6 +25,7 @@ public class HomeView {
         public void enableTranslateButton(boolean enable);
         public void cleanTextButtonVisibility(int visibility);
         public void cleanAllTranslatedText();
+        public void cleanTranslatedText();
         public void feedTranslate(String text_2);
         public void feedHistoryTranslated(int position_1, String text_1, int position_2, String text_2);
         public void progressBarVisibility(int visibility);

@@ -98,6 +98,7 @@ public class HomePresenter implements HomeView.IPresenter, HomeView.ILoadTransla
         catch (Exception ex){}
     }
 
+
     @Override
     public void loadTextToTranslate(Context context, String text, int requestCode){
         try {
@@ -155,22 +156,39 @@ public class HomePresenter implements HomeView.IPresenter, HomeView.ILoadTransla
         try {
             switch (view.getId()){
                 case R.id.btn_translate:
-                    // Connexion exists
-                    if(CommonPresenter.isMobileConnected(view.getContext())) {
-                        // Values are not null and are three
-                        if (values != null && values.containsKey(KEY_TEXT_TO_TRANSLATE)) {
+                    // Values are not null and key KEY_TEXT_TO_TRANSLATE exists
+                    if (values != null && values.containsKey(KEY_TEXT_TO_TRANSLATE)) {
+                        iHome.cleanTranslatedText();
+                        // Verify if text exists in the history table
+                        String textToTranslate = values.get(KEY_TEXT_TO_TRANSLATE);
+                        DAOHistory daoHistory = new DAOHistory(view.getContext());
+                        ArrayList<History> histories = daoHistory.getAllDataByTextToTranslate(textToTranslate);
+                        if(histories != null && histories.size() > 0){
+                            // Vérify languages
+                            int historyId = histories.get(0).getId();
+                            String langDeparture = histories.get(0).getLangDeparture();
+                            String langArrival = histories.get(0).getLangArrivale();
+                            //--
+                            if(langDeparture.equalsIgnoreCase(values.get(KEY_LANGUAGE_DEPARTURE)) && langArrival.equalsIgnoreCase(values.get(KEY_LANGUAGE_ARRIVAL))){
+                                loadTextToTranslate(view.getContext(), ""+historyId, VALUE_RECEIVE_HISTORY_TO_CONVERT);
+                                return;
+                            }
+                        }
+
+                        // Connexion exists
+                        if(CommonPresenter.isMobileConnected(view.getContext())) {
                             translationTraitement(view.getContext(), values);
                         }
                         else{
-                            // Translate is null or empty
-                            iHome.displayErrorOnEditText(view.getContext().getString(R.string.lb_field_required));
+                            // No connection
+                            String title = view.getContext().getString(R.string.lb_no_connection);
+                            String message = view.getContext().getString(R.string.lb_detail_no_connection);
+                            iHome.displayDialogMessage(title, message);
                         }
                     }
                     else{
-                        // No connection
-                        String title = view.getContext().getString(R.string.lb_no_connection);
-                        String message = view.getContext().getString(R.string.lb_detail_no_connection);
-                        iHome.displayDialogMessage(title, message);
+                        // Translate is null or empty
+                        iHome.displayErrorOnEditText(view.getContext().getString(R.string.lb_field_required));
                     }
                     break;
 

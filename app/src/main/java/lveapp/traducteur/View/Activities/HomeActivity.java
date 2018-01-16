@@ -317,6 +317,11 @@ public class HomeActivity extends AppCompatActivity implements HomeView.IHome, T
     }
 
     @Override
+    public void cleanTranslatedText(){
+        traduction_language_2.setText("");
+    }
+
+    @Override
     public void feedTranslate(String text_2) {
         traduction_language_2.setText(text_2);
         //--

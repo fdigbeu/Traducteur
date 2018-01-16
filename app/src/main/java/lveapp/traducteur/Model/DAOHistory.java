@@ -61,6 +61,17 @@ public class DAOHistory extends SQLiteOpenHelper {
         return histories;
     }
 
+    public ArrayList<History> getAllDataByTextToTranslate(String textToTranslate){
+        ArrayList<History> histories = new ArrayList<>();
+        Cursor cursor = getAllCursorDataByTextToTranslate(textToTranslate);
+        if(cursor != null && cursor.getCount() > 0){
+            while (cursor.moveToNext()){
+                histories.add(new History(cursor.getInt(COL_NUM_1), cursor.getString(COL_NUM_2), cursor.getString(COL_NUM_3), cursor.getString(COL_NUM_4), cursor.getString(COL_NUM_5), cursor.getString(COL_NUM_6)));
+            }
+        }
+        return histories;
+    }
+
     public boolean insertData(String langDeparture, String langArrivale, String messageDeparture, String messageArrivale){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -111,6 +122,12 @@ public class DAOHistory extends SQLiteOpenHelper {
     private Cursor getCursorDataById(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE "+COL_1+" = "+id, null);
+        return res;
+    }
+
+    private Cursor getAllCursorDataByTextToTranslate(String textToTranslate){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE "+COL_4+" LIKE '"+textToTranslate.replace("'", "''")+"'", null);
         return res;
     }
 }
