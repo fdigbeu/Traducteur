@@ -59,6 +59,7 @@ public class HomeView {
         public void displaySMSActivity();
         public void displayHistoryActivity();
         public void shareApplication(Context context);
+        public void loadTextToTranslate(String text);
     }
 
     public interface ILoadTranslation{

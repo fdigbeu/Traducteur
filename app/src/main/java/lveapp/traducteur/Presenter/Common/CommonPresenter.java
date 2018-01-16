@@ -44,10 +44,12 @@ public class CommonPresenter {
     public static final String KEY_INCREMENT_LINE_TO_CONVERT = "KEY_INCREMENT_LINE_TO_CONVERT";
     // value permission to read sms
     public static final int VALUE_PERMISSION_REQUEST_READ_SMS = 100;
-    // Value to receive selected sms to translate
+    // Value and key to receive selected sms to translate
     public static final int VALUE_RECEIVE_SMS_TO_CONVERT = 2;
+    public static final String KEY_RECEIVE_SMS_RETURN_DATA = "KEY_RECEIVE_SMS_RETURN_DATA";
     // Value to receive selected history to translate
     public static final int VALUE_RECEIVE_HISTORY_TO_CONVERT = 5;
+    public static final String KEY_RECEIVE_HISTORY_RETURN_DATA = "KEY_RECEIVE_HISTORY_RETURN_DATA";
     // Ref key language
     public static final String KEY_TEXT_TO_TRANSLATE = "KEY_TEXT_TO_TRANSLATE";
     public static final String KEY_LANGUAGE_DEPARTURE = "KEY_LANGUAGE_DEPARTURE";

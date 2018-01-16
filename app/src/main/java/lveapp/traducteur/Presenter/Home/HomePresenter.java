@@ -88,6 +88,15 @@ public class HomePresenter implements HomeView.IPresenter, HomeView.ILoadTransla
         catch (Exception ex){}
     }
 
+    @Override
+    public void loadTextToTranslate(String text){
+        try {
+            iHome.feedEditText(text);
+            iHome.simulateTranslateButtonClick();
+        }
+        catch (Exception ex){}
+    }
+
     /**
      * If user clicks on enter button on mobile touch
      * @param actionId

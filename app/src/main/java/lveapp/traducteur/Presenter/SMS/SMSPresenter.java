@@ -37,6 +37,17 @@ public class SMSPresenter implements SMSView.IPresenter, SMSView.ILoadSMS {
         catch (Exception ex){}
     }
 
+    /**
+     * SMS Item is selected from SMSRecycler Adapter
+     * @param texto
+     */
+    @Override
+    public void OnItemSMSSelected(Sms texto){
+        try {
+            isms.OnItemSMSSelected(texto);
+        }
+        catch (Exception ex){}
+    }
 
     @Override
     public void closeActivity() {

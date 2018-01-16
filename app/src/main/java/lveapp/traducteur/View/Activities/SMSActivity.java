@@ -1,9 +1,12 @@
 package lveapp.traducteur.View.Activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
@@ -15,6 +18,9 @@ import lveapp.traducteur.Presenter.SMS.SMSPresenter;
 import lveapp.traducteur.R;
 import lveapp.traducteur.View.Adapters.SMSRecyclerAdapter;
 import lveapp.traducteur.View.Interfaces.SMSView;
+
+import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_RECEIVE_SMS_RETURN_DATA;
+import static lveapp.traducteur.Presenter.Common.CommonPresenter.VALUE_RECEIVE_SMS_TO_CONVERT;
 
 public class SMSActivity extends AppCompatActivity implements SMSView.ISMS {
     // Ref widgets
@@ -70,8 +76,16 @@ public class SMSActivity extends AppCompatActivity implements SMSView.ISMS {
         GridLayoutManager gridLayout = new GridLayoutManager(SMSActivity.this, numberColumns);
         recyclerView.setLayoutManager(gridLayout);
         recyclerView.setHasFixedSize(true);
-        SMSRecyclerAdapter adapter = new SMSRecyclerAdapter(textos);
+        SMSRecyclerAdapter adapter = new SMSRecyclerAdapter(textos, this);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void OnItemSMSSelected(Sms texto){
+        Intent intent = new Intent();
+        intent.putExtra(KEY_RECEIVE_SMS_RETURN_DATA, texto.getMsg());
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override
@@ -88,4 +102,5 @@ public class SMSActivity extends AppCompatActivity implements SMSView.ISMS {
     public void closeActivity() {
         this.finish();
     }
+
 }

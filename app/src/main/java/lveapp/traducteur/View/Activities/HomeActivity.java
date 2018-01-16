@@ -1,5 +1,6 @@
 package lveapp.traducteur.View.Activities;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +41,8 @@ import lveapp.traducteur.View.Interfaces.HomeView;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_COPY_TEXT_IN_PRESS;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_LANGUAGE_ARRIVAL;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_LANGUAGE_DEPARTURE;
+import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_RECEIVE_HISTORY_RETURN_DATA;
+import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_RECEIVE_SMS_RETURN_DATA;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_TEXT_TO_TRANSLATE;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.VALUE_PERMISSION_REQUEST_READ_SMS;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.VALUE_RECEIVE_HISTORY_TO_CONVERT;
@@ -454,5 +458,33 @@ public class HomeActivity extends AppCompatActivity implements HomeView.IHome, T
                 homePresenter.displayDialogMessage(HomeActivity.this, title, message);
             }
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // If it's value from VALUE_RECEIVE_SMS_TO_CONVERT
+        if (requestCode == VALUE_RECEIVE_SMS_TO_CONVERT) {
+            if (resultCode == Activity.RESULT_OK) {
+                traduction_language_2.setText("");
+                String result = data.getStringExtra(KEY_RECEIVE_SMS_RETURN_DATA);
+                homePresenter.loadTextToTranslate(result);
+            }
+            else if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("TAG_SMS_ERROR", "Activity.RESULT_CANCELED = "+requestCode);
+            }
+        }
+        else if(requestCode == VALUE_RECEIVE_HISTORY_TO_CONVERT){
+
+            if (resultCode == Activity.RESULT_OK) {
+                traduction_language_2.setText("");
+                String result = data.getStringExtra(KEY_RECEIVE_HISTORY_RETURN_DATA);
+                homePresenter.loadTextToTranslate(result);
+            }
+            else if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("TAG_HISTORY_ERROR", "Activity.RESULT_CANCELED = "+requestCode);
+            }
+        }
+        else{}
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -18,11 +18,13 @@ public class SMSView {
         public void progressBarVisibility(int visibility);
         public void recyclerViewVisibility(int visibility);
         public void closeActivity();
+        public void OnItemSMSSelected(Sms texto);
     }
 
     public interface IPresenter{
         public void loadSMSData(Context context);
         public void closeActivity();
+        public void OnItemSMSSelected(Sms texto);
     }
 
     public interface ILoadSMS{

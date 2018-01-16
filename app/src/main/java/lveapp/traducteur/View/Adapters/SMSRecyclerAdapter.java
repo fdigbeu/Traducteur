@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import lveapp.traducteur.Model.Sms;
+import lveapp.traducteur.Presenter.SMS.SMSPresenter;
 import lveapp.traducteur.R;
+import lveapp.traducteur.View.Interfaces.SMSView;
 
 /**
  * Created by Maranatha on 10/10/2017.
@@ -21,9 +23,11 @@ public class SMSRecyclerAdapter extends RecyclerView.Adapter<SMSRecyclerAdapter.
 
     private ArrayList<Sms> textoItems;
     private Hashtable<Integer, MyViewHolder> mViewHolder;
+    private SMSView.ISMS isms;
 
-    public SMSRecyclerAdapter(ArrayList<Sms> textoItems) {
+    public SMSRecyclerAdapter(ArrayList<Sms> textoItems, SMSView.ISMS isms) {
         this.textoItems = textoItems;
+        this.isms = isms;
         mViewHolder = new Hashtable<>();
     }
 
@@ -71,7 +75,9 @@ public class SMSRecyclerAdapter extends RecyclerView.Adapter<SMSRecyclerAdapter.
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Sms mTexto = textoItems.get(positionItem);
+                    SMSPresenter smsPresenter = new SMSPresenter(isms);
+                    smsPresenter.OnItemSMSSelected(mTexto);
                 }
             });
         }
