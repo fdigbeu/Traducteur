@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import java.util.Hashtable;
+import java.util.Locale;
 
 /**
  * Created by Maranatha on 13/01/2018.
@@ -42,6 +43,7 @@ public class HomeView {
         public void copyTextToClipData(String text);
         public void displaySMSActivity();
         public void displayHistoryActivity();
+        public void displayGoogleVoiceDialog(Locale localeLang);
     }
 
     public interface IPresenter{
@@ -62,6 +64,7 @@ public class HomeView {
         public void displayHistoryActivity();
         public void shareApplication(Context context);
         public void loadTextToTranslate(Context context, String text, int requestCode);
+        public void displayGoogleVoiceDialog(String langDepature);
     }
 
     public interface ILoadTranslation{

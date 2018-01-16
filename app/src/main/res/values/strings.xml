@@ -28,4 +28,6 @@
     <string name="lb_select_sms_to_translate">Sélectionnez le SMS à traduire</string>
     <string name="lb_url_play_store">https://play.google.com/store/apps/details?id=lveapp.traducteur</string>
     <string name="lb_message_share_app">Bonjour,\nJe tiens à te faire découvrir l\'application android Traducteur.\nClique sur le lien qui apparaît en bas de ce message, et n\'hésite pas à en parler autour de toi.</string>
+    <string name="lb_google_voice_error">Google voice non supporté</string>
+    <string name="lb_detail_google_voice_error">Votre appareil ne supporte pas la reconnaissance vocale.</string>
 </resources>

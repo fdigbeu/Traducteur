@@ -1,6 +1,7 @@
 package lveapp.traducteur.View.Activities;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
+import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +34,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Locale;
 
 import lveapp.traducteur.Presenter.Home.HomePresenter;
 import lveapp.traducteur.R;
@@ -44,6 +48,7 @@ import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_LANGUAGE_DE
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_RECEIVE_HISTORY_RETURN_DATA;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_RECEIVE_SMS_RETURN_DATA;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_TEXT_TO_TRANSLATE;
+import static lveapp.traducteur.Presenter.Common.CommonPresenter.VALUE_GOOGLE_VOICE_RETURN_DATA;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.VALUE_PERMISSION_REQUEST_READ_SMS;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.VALUE_RECEIVE_HISTORY_TO_CONVERT;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.VALUE_RECEIVE_SMS_TO_CONVERT;
@@ -93,6 +98,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView.IHome, T
         switch (id){
             // Voice
             case R.id.action_voice:
+                homePresenter.displayGoogleVoiceDialog(translateValues.get(KEY_LANGUAGE_DEPARTURE));
                 break;
             // SMS
             case R.id.action_sms:
@@ -481,8 +487,8 @@ public class HomeActivity extends AppCompatActivity implements HomeView.IHome, T
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // If it's value from VALUE_RECEIVE_SMS_TO_CONVERT
-        if (requestCode == VALUE_RECEIVE_SMS_TO_CONVERT) {
+        // If it's value from SMSActivity
+        if (requestCode == VALUE_RECEIVE_SMS_TO_CONVERT && data != null) {
             if (resultCode == Activity.RESULT_OK) {
                 traduction_language_2.setText("");
                 String result = data.getStringExtra(KEY_RECEIVE_SMS_RETURN_DATA);
@@ -491,9 +497,10 @@ public class HomeActivity extends AppCompatActivity implements HomeView.IHome, T
             else if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("TAG_SMS_ERROR", "Activity.RESULT_CANCELED = "+requestCode);
             }
+            else{}
         }
-        else if(requestCode == VALUE_RECEIVE_HISTORY_TO_CONVERT){
-
+        // It's value from HistoryActivity
+        else if(requestCode == VALUE_RECEIVE_HISTORY_TO_CONVERT && data != null){
             if (resultCode == Activity.RESULT_OK) {
                 traduction_language_2.setText("");
                 String result = data.getStringExtra(KEY_RECEIVE_HISTORY_RETURN_DATA);
@@ -502,8 +509,37 @@ public class HomeActivity extends AppCompatActivity implements HomeView.IHome, T
             else if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("TAG_HISTORY_ERROR", "Activity.RESULT_CANCELED = "+requestCode);
             }
+            else{}
+        }
+        // It's Value from Google voice
+        else if(requestCode == VALUE_GOOGLE_VOICE_RETURN_DATA && data != null){
+            if (resultCode == Activity.RESULT_OK) {
+                traduction_language_2.setText("");
+                ArrayList<String> voiceInText = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                homePresenter.loadTextToTranslate(HomeActivity.this, voiceInText.get(0).toString(), VALUE_GOOGLE_VOICE_RETURN_DATA);
+            }
+            else if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("TAG_GOOGLE_VOICE_ERROR", "Activity.RESULT_CANCELED = "+requestCode);
+            }
+            else{}
         }
         else{}
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void displayGoogleVoiceDialog(Locale localeLang) {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, localeLang);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getResources().getString(R.string.lb_say_something));
+        try {
+            startActivityForResult(intent, VALUE_GOOGLE_VOICE_RETURN_DATA);
+        }
+        catch (ActivityNotFoundException ex){
+            String title = getResources().getString(R.string.lb_google_voice_error);
+            String message = getResources().getString(R.string.lb_detail_google_voice_error);
+            homePresenter.displayDialogMessage(HomeActivity.this, title, message);
+        }
     }
 }

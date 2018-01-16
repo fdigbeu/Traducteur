@@ -54,6 +54,8 @@ public class CommonPresenter {
     // Value to receive selected history to translate
     public static final int VALUE_RECEIVE_HISTORY_TO_CONVERT = 5;
     public static final String KEY_RECEIVE_HISTORY_RETURN_DATA = "KEY_RECEIVE_HISTORY_RETURN_DATA";
+    // Value google voice return
+    public static final int VALUE_GOOGLE_VOICE_RETURN_DATA = 9;
     // Ref key language
     public static final String KEY_TEXT_TO_TRANSLATE = "KEY_TEXT_TO_TRANSLATE";
     public static final String KEY_LANGUAGE_DEPARTURE = "KEY_LANGUAGE_DEPARTURE";

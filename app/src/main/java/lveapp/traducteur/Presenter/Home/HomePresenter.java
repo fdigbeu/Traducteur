@@ -38,6 +38,7 @@ import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_LANGUAGE_AR
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_LANGUAGE_DEPARTURE;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_TEXT_TO_TRANSLATE;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_TOTAL_LINE_TO_CONVERT;
+import static lveapp.traducteur.Presenter.Common.CommonPresenter.VALUE_GOOGLE_VOICE_RETURN_DATA;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.VALUE_RECEIVE_HISTORY_TO_CONVERT;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.VALUE_RECEIVE_SMS_TO_CONVERT;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.saveDataInSharePreferences;
@@ -124,9 +125,19 @@ public class HomePresenter implements HomeView.IPresenter, HomeView.ILoadTransla
                         Toast.makeText(context, context.getResources().getString(R.string.lb_save_error), Toast.LENGTH_LONG).show();
                     }
                     break;
+                case VALUE_GOOGLE_VOICE_RETURN_DATA:
+                    iHome.feedEditText(text);
+                    iHome.simulateTranslateButtonClick();
+                    break;
             }
         }
         catch (Exception ex){}
+    }
+
+    @Override
+    public void displayGoogleVoiceDialog(String langDepature) {
+        Locale localeLang = CommonPresenter.getLocalLanguageBy(langDepature);
+        iHome.displayGoogleVoiceDialog(localeLang);
     }
 
     /**
