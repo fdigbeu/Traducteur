@@ -51,7 +51,7 @@ public class SMSAsyntask extends AsyncTask<Void, Void, ArrayList<Sms>>{
             return textos;
         }
         catch (Exception ex){
-            iLoadSMS.OnLoadSMSError();
+            iLoadSMS.OnLoadSMSError(context);
         }
         return null;
     }
@@ -60,9 +60,9 @@ public class SMSAsyntask extends AsyncTask<Void, Void, ArrayList<Sms>>{
     protected void onPostExecute(ArrayList<Sms> textos) {
         super.onPostExecute(textos);
         if(textos != null)
-            iLoadSMS.OnLoadSMSFinished(textos);
+            iLoadSMS.OnLoadSMSFinished(context, textos);
         else
-            iLoadSMS.OnLoadSMSError();
+            iLoadSMS.OnLoadSMSError(context);
     }
 
     public void initialization(Context context, SMSView.ILoadSMS iLoadSMS){

@@ -1,5 +1,6 @@
 package lveapp.traducteur.View.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,6 +16,8 @@ import lveapp.traducteur.Presenter.History.HistoryPresenter;
 import lveapp.traducteur.R;
 import lveapp.traducteur.View.Adapters.HistoryRecyclerAdapter;
 import lveapp.traducteur.View.Interfaces.HistoryView;
+
+import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_RECEIVE_HISTORY_RETURN_DATA;
 
 public class HistoryActivity extends AppCompatActivity implements HistoryView.IHistory {
     // Ref widgets
@@ -69,8 +72,16 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView.IH
         GridLayoutManager gridLayout = new GridLayoutManager(HistoryActivity.this, numberColumns);
         recyclerView.setLayoutManager(gridLayout);
         recyclerView.setHasFixedSize(true);
-        HistoryRecyclerAdapter adapter = new HistoryRecyclerAdapter(histories);
+        HistoryRecyclerAdapter adapter = new HistoryRecyclerAdapter(histories, this);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void OnItemHistorySelected(History history){
+        Intent intent = new Intent();
+        intent.putExtra(KEY_RECEIVE_HISTORY_RETURN_DATA, ""+history.getId());
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override

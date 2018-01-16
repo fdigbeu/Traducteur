@@ -31,6 +31,10 @@ public class History {
                 "\",\"date\":\"" + date + "\"}";
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getLangDeparture() {
         return langDeparture;
     }

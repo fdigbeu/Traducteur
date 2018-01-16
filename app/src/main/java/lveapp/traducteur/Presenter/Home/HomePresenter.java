@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -23,6 +24,8 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Locale;
 
+import lveapp.traducteur.Model.DAOHistory;
+import lveapp.traducteur.Model.History;
 import lveapp.traducteur.Model.Translation;
 import lveapp.traducteur.Presenter.Common.CommonPresenter;
 import lveapp.traducteur.R;
@@ -35,6 +38,8 @@ import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_LANGUAGE_AR
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_LANGUAGE_DEPARTURE;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_TEXT_TO_TRANSLATE;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.KEY_TOTAL_LINE_TO_CONVERT;
+import static lveapp.traducteur.Presenter.Common.CommonPresenter.VALUE_RECEIVE_HISTORY_TO_CONVERT;
+import static lveapp.traducteur.Presenter.Common.CommonPresenter.VALUE_RECEIVE_SMS_TO_CONVERT;
 import static lveapp.traducteur.Presenter.Common.CommonPresenter.saveDataInSharePreferences;
 
 /**
@@ -47,7 +52,12 @@ public class HomePresenter implements HomeView.IPresenter, HomeView.ILoadTransla
     // Ref TranslateAsyntask
     private TranslateAsyntask translateAsyntask;
     // Ref retrieving text from Asyntask
+    private String languageDeparture;
+    private String messageToTranslate;
+    private String languageArrival;
+    private String messageTranslated;
     private String translatedText = "";
+    // Ref separation of translated text
     private Hashtable<Integer, String> linesToTranslate;
 
     // Constructor
@@ -89,10 +99,18 @@ public class HomePresenter implements HomeView.IPresenter, HomeView.ILoadTransla
     }
 
     @Override
-    public void loadTextToTranslate(String text){
+    public void loadTextToTranslate(Context context, String text, int requestCode){
         try {
-            iHome.feedEditText(text);
-            iHome.simulateTranslateButtonClick();
+            switch (requestCode){
+                case VALUE_RECEIVE_SMS_TO_CONVERT:
+                    iHome.feedEditText(text);
+                    iHome.simulateTranslateButtonClick();
+                    break;
+                case VALUE_RECEIVE_HISTORY_TO_CONVERT:
+                    Toast.makeText(context, "HISTORY_ID = "+text, Toast.LENGTH_LONG).show();
+                    Log.i("TAG_HISTORY", "HISTORY_ID = "+text);
+                    break;
+            }
         }
         catch (Exception ex){}
     }
@@ -196,30 +214,35 @@ public class HomePresenter implements HomeView.IPresenter, HomeView.ILoadTransla
         catch (Exception ex){}
     }
 
+    /**
+     * Translation traitement
+     * @param context
+     * @param values
+     */
     private void translationTraitement(Context context, Hashtable<String, String> values){
         try {
             final int minLines = 100;
             final int maxLines = 500;
-            String textToTranslate = values.get(KEY_TEXT_TO_TRANSLATE);
-            String langDeparture = values.get(KEY_LANGUAGE_DEPARTURE);
-            String langArrival = values.get(KEY_LANGUAGE_ARRIVAL);
+            messageToTranslate = values.get(KEY_TEXT_TO_TRANSLATE);
+            languageDeparture = values.get(KEY_LANGUAGE_DEPARTURE);
+            languageArrival = values.get(KEY_LANGUAGE_ARRIVAL);
             // Text to translate is not null or empty
-            if(textToTranslate != null && textToTranslate.trim().length() > 0) {
+            if(messageToTranslate != null && messageToTranslate.trim().length() > 0) {
                 // Languages are not the sames
-                if(!langDeparture.equalsIgnoreCase(langArrival)) {
+                if(!languageDeparture.equalsIgnoreCase(languageArrival)) {
                     linesToTranslate = new Hashtable<>();
-                    linesToTranslate.put(0, textToTranslate);
+                    linesToTranslate.put(0, messageToTranslate);
                     // Retrieve abreviations
-                    String langAbrevDeparture = CommonPresenter.getLangAbrevBy(langDeparture);
-                    String langAbrevArrival = CommonPresenter.getLangAbrevBy(langArrival);
+                    String langAbrevDeparture = CommonPresenter.getLangAbrevBy(languageDeparture);
+                    String langAbrevArrival = CommonPresenter.getLangAbrevBy(languageArrival);
                     String urlws = CommonPresenter.linkTranslate.replace("{LANG_1}", langAbrevDeparture).replace("{LANG_2}", langAbrevArrival);
                     //Log.i("TAG_TEXT_LENGTH", "textToTranslate.length() = "+textToTranslate.length());
                     //Log.i("TAG_URL", "URL = "+urlws);
                     // If number of characters excedeed 500
-                    if(textToTranslate.length() > maxLines){
+                    if(messageToTranslate.length() > maxLines){
                         String line = "";
                         int total = 0;
-                        String lines[] = textToTranslate.split(" ");
+                        String lines[] = messageToTranslate.split(" ");
                         int compteur=0;
                         for(int i=0; i<lines.length; i++){
                             total += lines[i].length();
@@ -250,7 +273,7 @@ public class HomePresenter implements HomeView.IPresenter, HomeView.ILoadTransla
                     iHome.progressBarVisibility(View.VISIBLE);
                     // Load traduction
                     translateAsyntask = new TranslateAsyntask();
-                    translateAsyntask.initialization(context, this, linesToTranslate, langDeparture, langArrival, urlws);
+                    translateAsyntask.initialization(context, this, linesToTranslate, languageDeparture, languageArrival, urlws);
                     translateAsyntask.execute();
                 }
                 else{
@@ -360,7 +383,7 @@ public class HomePresenter implements HomeView.IPresenter, HomeView.ILoadTransla
     }
 
     @Override
-    public void onTranslatedFinished(String textTranslated) {
+    public void onTranslatedFinished(Context context, String textTranslated) {
         try {
             translatedText += textTranslated;
             Log.i("TAG_TEXT_FINISHED", translatedText);
@@ -371,7 +394,14 @@ public class HomePresenter implements HomeView.IPresenter, HomeView.ILoadTransla
             iHome.progressBarVisibility(View.GONE);
             iHome.cleanTextButtonVisibility(View.VISIBLE);
             // Empty text value
+            messageTranslated = translatedText;
             translatedText = "";
+            // Save translation
+            DAOHistory daoHistory = new DAOHistory(context);
+            boolean success = daoHistory.insertData(languageDeparture, languageArrival, messageToTranslate, messageTranslated);
+            if(!success){
+                Toast.makeText(context, context.getResources().getString(R.string.lb_save_error), Toast.LENGTH_LONG).show();
+            }
         }
         catch (Exception ex){}
     }

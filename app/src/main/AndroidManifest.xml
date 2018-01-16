@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".View.Activities.HomeActivity"
-            android:screenOrientation="sensorPortrait">
+            android:configChanges="orientation|screenSize|keyboardHidden">
 
             <!-- Main activity -->
             <intent-filter>
@@ -40,10 +40,10 @@
         <activity
             android:name=".View.Activities.SMSActivity"
             android:label="@string/app_sms_name"
-            android:screenOrientation="sensorPortrait" />
+            android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity android:name=".View.Activities.HistoryActivity"
             android:label="@string/app_history_name"
-            android:screenOrientation="sensorPortrait" />
+            android:configChanges="orientation|screenSize|keyboardHidden" />
     </application>
 
 </manifest>

@@ -28,7 +28,7 @@ public class SMSView {
     }
 
     public interface ILoadSMS{
-        public void OnLoadSMSFinished(ArrayList<Sms> textos);
-        public void OnLoadSMSError();
+        public void OnLoadSMSFinished(Context context, ArrayList<Sms> textos);
+        public void OnLoadSMSError(Context context);
     }
 }

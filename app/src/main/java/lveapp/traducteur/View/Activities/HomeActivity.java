@@ -467,7 +467,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView.IHome, T
             if (resultCode == Activity.RESULT_OK) {
                 traduction_language_2.setText("");
                 String result = data.getStringExtra(KEY_RECEIVE_SMS_RETURN_DATA);
-                homePresenter.loadTextToTranslate(result);
+                homePresenter.loadTextToTranslate(HomeActivity.this, result, VALUE_RECEIVE_SMS_TO_CONVERT);
             }
             else if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("TAG_SMS_ERROR", "Activity.RESULT_CANCELED = "+requestCode);
@@ -478,7 +478,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView.IHome, T
             if (resultCode == Activity.RESULT_OK) {
                 traduction_language_2.setText("");
                 String result = data.getStringExtra(KEY_RECEIVE_HISTORY_RETURN_DATA);
-                homePresenter.loadTextToTranslate(result);
+                homePresenter.loadTextToTranslate(HomeActivity.this, result, VALUE_RECEIVE_HISTORY_TO_CONVERT);
             }
             else if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("TAG_HISTORY_ERROR", "Activity.RESULT_CANCELED = "+requestCode);

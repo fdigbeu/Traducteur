@@ -6,6 +6,7 @@
     <string name="lb_write_text">Saisissez le texte à traduire</string>
     <string name="lb_say_something">Dites quelque chose</string>
     <string name="lb_fermer">FERMER</string>
+    <string name="lb_save_error">Erreur survenue pendant l\'enregistrement des données.</string>
     <string name="lb_unstable_connection">Connexion internet instable</string>
     <string name="lb_detail_unstable_connection">Les données mobiles sont instables. Vérifiez votre connexion réseau et réessayez.</string>
     <string name="lb_no_connection">Aucune connexion internet</string>
@@ -20,6 +21,8 @@
     <string name="lb_share_app">Partager l\'application</string>
     <string name="lb_sms_traduction">Traduire les SMS</string>
     <string name="lb_hitory_traduction">Historique</string>
+    <string name="lb_empty_history">Aucun historique</string>
+    <string name="lb_detail_empty_history">Aucune traduction enregistrée pour le moment.</string>
     <string name="lb_required_permission">Permission requise</string>
     <string name="lb_detail_required_sms_permission">Cette permission permet à l\'application d\'avoir accès à vos SMS.</string>
     <string name="lb_select_sms_to_translate">Sélectionnez le SMS à traduire</string>

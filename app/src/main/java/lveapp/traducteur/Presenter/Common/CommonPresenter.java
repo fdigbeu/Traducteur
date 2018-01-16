@@ -306,12 +306,31 @@ public class CommonPresenter {
      * @param textView
      * @param textValue
      */
-    private static void buildTextViewToHtmlData(TextView textView, String textValue){
+    public static void buildTextViewToHtmlData(TextView textView, String textValue){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textView.setText(Html.fromHtml(textValue.replace("\n", "<br />"), Html.FROM_HTML_MODE_LEGACY));
         }
         else{
             textView.setText(Html.fromHtml(textValue.replace("\n", "<br />")));
+        }
+    }
+
+    /**
+     * Reduce text length
+     * @param text
+     * @param maxLength
+     * @return
+     */
+    public static String reduceLengthOfTheText(String text, int maxLength){
+        try {
+            int textLength = text.length();
+            String mText = text.trim().replace("\n\n", "\n").trim();
+            String textReduce = mText.substring(0, ((textLength > maxLength) ? maxLength : textLength));
+            String textReturn = textReduce+((textLength > maxLength) ? "..." : "");
+            return textReturn;
+        }
+        catch (Exception ex){
+            return text;
         }
     }
 

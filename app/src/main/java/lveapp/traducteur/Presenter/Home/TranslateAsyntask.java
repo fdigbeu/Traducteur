@@ -113,7 +113,7 @@ public class TranslateAsyntask extends AsyncTask<Void, Void, Translation> {
                 return;
             }
             // All text is finished to be translated
-            iLoadTranslation.onTranslatedFinished(translation.getText());
+            iLoadTranslation.onTranslatedFinished(context, translation.getText());
         }
         else{
             // If translation.getText() == "null" request again

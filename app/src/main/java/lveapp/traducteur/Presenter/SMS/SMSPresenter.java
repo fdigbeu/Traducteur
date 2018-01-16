@@ -58,7 +58,7 @@ public class SMSPresenter implements SMSView.IPresenter, SMSView.ILoadSMS {
     }
 
     @Override
-    public void OnLoadSMSFinished(ArrayList<Sms> textos) {
+    public void OnLoadSMSFinished(Context context, ArrayList<Sms> textos) {
         isms.progressBarVisibility(View.GONE);
         isms.recyclerViewVisibility(View.VISIBLE);
         isms.loadSMSData(textos, 1);
@@ -66,7 +66,7 @@ public class SMSPresenter implements SMSView.IPresenter, SMSView.ILoadSMS {
     }
 
     @Override
-    public void OnLoadSMSError() {
+    public void OnLoadSMSError(Context context) {
         Log.i("TAG_SMS_ERROR", "SMS ERROR");
     }
 }

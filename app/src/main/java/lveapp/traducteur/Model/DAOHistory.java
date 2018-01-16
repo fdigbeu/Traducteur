@@ -42,7 +42,7 @@ public class DAOHistory extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE "+TABLE_NAME+" ("+COL_1+" INTEGER PRIMARY KEY AUTOINCREMENT, "+COL_2+" TEXT, "+COL_3+" TEXT, "+COL_4+" TEXT, "+COL_5+" TEXT, "+COL_5+" TEXT, "+COL_6+" VARCHAR)");
+        db.execSQL("CREATE TABLE "+TABLE_NAME+" ("+COL_1+" INTEGER PRIMARY KEY AUTOINCREMENT, "+COL_2+" TEXT, "+COL_3+" TEXT, "+COL_4+" TEXT, "+COL_5+" TEXT, "+COL_6+" VARCHAR)");
     }
 
     @Override
@@ -54,7 +54,9 @@ public class DAOHistory extends SQLiteOpenHelper {
         ArrayList<History> histories = new ArrayList<>();
         Cursor cursor = getAllCursorData();
         if(cursor != null && cursor.getCount() > 0){
-            histories.add(new History(cursor.getInt(COL_NUM_1), cursor.getString(COL_NUM_2), cursor.getString(COL_NUM_3), cursor.getString(COL_NUM_4), cursor.getString(COL_NUM_5), cursor.getString(COL_NUM_6)));
+            while (cursor.moveToNext()){
+                histories.add(new History(cursor.getInt(COL_NUM_1), cursor.getString(COL_NUM_2), cursor.getString(COL_NUM_3), cursor.getString(COL_NUM_4), cursor.getString(COL_NUM_5), cursor.getString(COL_NUM_6)));
+            }
         }
         return histories;
     }
@@ -69,7 +71,7 @@ public class DAOHistory extends SQLiteOpenHelper {
         contentValues.put(COL_6, CommonPresenter.getStringDateDayMonthYear());
         long result = db.insert(TABLE_NAME, null, contentValues);
         db.close();
-        return (result == -1);
+        return (result != -1);
     }
 
     public Integer deleteData(int id){

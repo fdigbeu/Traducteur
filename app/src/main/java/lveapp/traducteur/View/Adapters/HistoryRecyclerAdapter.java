@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import lveapp.traducteur.Model.History;
+import lveapp.traducteur.Presenter.History.HistoryPresenter;
 import lveapp.traducteur.R;
+import lveapp.traducteur.View.Interfaces.HistoryView;
 
 /**
  * Created by Maranatha on 10/10/2017.
@@ -21,9 +23,11 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
 
     private ArrayList<History> historyItems;
     private Hashtable<Integer, MyViewHolder> mViewHolder;
+    private HistoryView.IHistory iHistory;
 
-    public HistoryRecyclerAdapter(ArrayList<History> historyItems) {
+    public HistoryRecyclerAdapter(ArrayList<History> historyItems, HistoryView.IHistory iHistory) {
         this.historyItems = historyItems;
+        this.iHistory = iHistory;
         mViewHolder = new Hashtable<>();
     }
 
@@ -38,9 +42,13 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
         holder.positionItem = position;
         mViewHolder.put(position, holder);
         History mHistory = historyItems.get(position);
-        holder.itemTitle.setText(mHistory.getLangDeparture()+"/"+mHistory.getLangArrivale());
-        holder.itemDate.setText(mHistory.getDate());
-        holder.itemSubtitle.setText(mHistory.getMessageDeparture()+"\n"+mHistory.getMessageArrivale());
+        final int maxLength = 100;
+        HistoryPresenter historyPresenter = new HistoryPresenter(iHistory);
+        String titleValue = "<font color=\"#441c04\">"+mHistory.getLangDeparture()+"</font> -> <font color=\"#804040\">"+mHistory.getLangArrivale()+"</font>";
+        historyPresenter.buildTextViewToHtmlData(holder.itemTitle, titleValue);
+        historyPresenter.buildTextViewToHtmlData(holder.itemDate, mHistory.getDate());
+        String subTitleValue = "<font color=\"#441c04\">"+historyPresenter.reduceTextLength(mHistory.getMessageDeparture(), maxLength)+"</font>\n<font color=\"#804040\">"+historyPresenter.reduceTextLength(mHistory.getMessageArrivale(), maxLength)+"</font>";
+        historyPresenter.buildTextViewToHtmlData(holder.itemSubtitle, subTitleValue);
         holder.itemIcon.setImageResource(R.drawable.ic_history_50dp);
     }
 
@@ -71,7 +79,9 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    History mHistory = historyItems.get(positionItem);
+                    HistoryPresenter historyPresenter = new HistoryPresenter(iHistory);
+                    historyPresenter.OnItemHistorySelected(mHistory);
                 }
             });
         }
