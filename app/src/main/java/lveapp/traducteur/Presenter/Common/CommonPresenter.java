@@ -22,6 +22,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Locale;
@@ -33,6 +34,9 @@ import lveapp.traducteur.R;
  */
 
 public class CommonPresenter {
+    // Ref database
+    public static final String DATABASE_NAME = "TRADUCTEUR.DB";
+    public static final int DATABASE_VERSION = 1;
     // Link translation
     public static final String linkTranslate = "http://mymemory.translated.net/api/get?q={SEARCH}&langpair={LANG_1}|{LANG_2}";
     // Language abreviation list
@@ -248,6 +252,60 @@ public class CommonPresenter {
         return false;
     }
 
+    /**
+     * Display date of to day in string formate : Day-Month-Year
+     * @return
+     */
+    public static String getStringDateDayMonthYear(){
+        String formatDate = "dd/MM/yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatDate);
+        String date = simpleDateFormat.format(new Date());
+        return date;
+    }
+
+    /**
+     * Display date of to day in string formate : Year-Month-Day
+     * @return
+     */
+    public static String getStringDateYearMonthDay(){
+        String formatDate = "yyyy/MM/dd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatDate);
+        String date = simpleDateFormat.format(new Date());
+        return date;
+    }
+
+    // Number of date between two dates
+    public static long getNumberOfDate(String dateDepart, String dateRetour, String formatDate)
+    {
+        Date depart = null;
+        Date retour = null;
+        try
+        {
+            depart = new SimpleDateFormat(formatDate).parse(dateDepart);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        try
+        {
+            retour = new SimpleDateFormat(formatDate).parse(dateRetour);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        long nbJours = (depart.getTime()- retour.getTime())/86400000;
+        //--
+        return Math.abs(nbJours);
+    }
+
+    /**
+     * Build text to html
+     * @param textView
+     * @param textValue
+     */
     private static void buildTextViewToHtmlData(TextView textView, String textValue){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textView.setText(Html.fromHtml(textValue.replace("\n", "<br />"), Html.FROM_HTML_MODE_LEGACY));
