@@ -107,8 +107,21 @@ public class HomePresenter implements HomeView.IPresenter, HomeView.ILoadTransla
                     iHome.simulateTranslateButtonClick();
                     break;
                 case VALUE_RECEIVE_HISTORY_TO_CONVERT:
-                    Toast.makeText(context, "HISTORY_ID = "+text, Toast.LENGTH_LONG).show();
-                    Log.i("TAG_HISTORY", "HISTORY_ID = "+text);
+                    int historyID = Integer.parseInt(text);
+                    DAOHistory daoHistory = new DAOHistory(context);
+                    History history = daoHistory.getById(historyID);
+                    languageDeparture = history.getLangDeparture();
+                    languageArrival = history.getLangArrivale();
+                    messageToTranslate = history.getMessageDeparture();
+                    messageTranslated =  history.getMessageArrivale();
+                    iHome.feedHistoryTranslated(CommonPresenter.getPositionByDetailLang(languageDeparture), messageToTranslate, CommonPresenter.getPositionByDetailLang(languageArrival), messageTranslated);
+                    iHome.enableAllWidgets(true);
+                    iHome.cleanTextButtonVisibility(View.VISIBLE);
+                    // Save translation
+                    boolean success = daoHistory.insertData(languageDeparture, languageArrival, messageToTranslate, messageTranslated);
+                    if(!success){
+                        Toast.makeText(context, context.getResources().getString(R.string.lb_save_error), Toast.LENGTH_LONG).show();
+                    }
                     break;
             }
         }
@@ -306,8 +319,8 @@ public class HomePresenter implements HomeView.IPresenter, HomeView.ILoadTransla
                 if((textToTranslate.length()==0) && !(textTranslated.length()==0)){
                     iHome.simulateCleanTextButtonClick();
                     iHome.stopTextToSpeechReading();
-                    Log.i("TAG_TEXT_CLEAN", "textTranslated = "+textTranslated);
-                    Log.i("TAG_TEXT_CLEAN", "textToTranslate = "+textToTranslate);
+                    //Log.i("TAG_TEXT_CLEAN", "textTranslated = "+textTranslated);
+                    //Log.i("TAG_TEXT_CLEAN", "textToTranslate = "+textToTranslate);
                 }
             }
         }

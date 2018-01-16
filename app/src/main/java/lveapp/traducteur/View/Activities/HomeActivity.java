@@ -325,6 +325,20 @@ public class HomeActivity extends AppCompatActivity implements HomeView.IHome, T
     }
 
     @Override
+    public void feedHistoryTranslated(int position_1, String text_1, int position_2, String text_2) {
+        language_1.setSelection(position_1);
+        translateValues.put(KEY_LANGUAGE_DEPARTURE, ""+language_1.getItemAtPosition(position_1));
+        traduction_language_1.setText(text_1);
+        translateValues.put(KEY_TEXT_TO_TRANSLATE, text_1);
+        language_2.setSelection(position_2);
+        translateValues.put(KEY_LANGUAGE_ARRIVAL, ""+language_2.getItemAtPosition(position_2));
+        traduction_language_2.setText(text_2);
+        //--
+        homePresenter.initializeTextToSpeechLangDeparture(initTextToSpeech, textToSpeech_1, translateValues.get(KEY_LANGUAGE_DEPARTURE));
+        homePresenter.initializeTextToSpeechLangArrival(initTextToSpeech, textToSpeech_2, translateValues.get(KEY_LANGUAGE_ARRIVAL));
+    }
+
+    @Override
     public void progressBarVisibility(int visibility) {
         progressBar.setVisibility(visibility);
     }

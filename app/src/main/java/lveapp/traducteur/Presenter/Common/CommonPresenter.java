@@ -103,6 +103,19 @@ public class CommonPresenter {
         return null;
     }
 
+    public static int getPositionByDetailLang(String detailLang){
+        try {
+            Hashtable<String, Integer> hashtablePosition = new Hashtable<>();
+            for (int i=0; i<languageDetail.length; i++){
+                hashtablePosition.put(languageDetail[i], i);
+            }
+            return hashtablePosition.get(detailLang);
+        }
+        catch (Exception ex){
+            return 0;
+        }
+    }
+
     /**
      * Verify if connection exists
      * @param context

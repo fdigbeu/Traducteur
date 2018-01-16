@@ -74,6 +74,17 @@ public class DAOHistory extends SQLiteOpenHelper {
         return (result != -1);
     }
 
+    public History getById(int id){
+        History history = null;
+        Cursor cursor = getCursorDataById(id);
+        if(cursor != null && cursor.getCount() > 0){
+            while (cursor.moveToNext()){
+                history = new History(cursor.getInt(COL_NUM_1), cursor.getString(COL_NUM_2), cursor.getString(COL_NUM_3), cursor.getString(COL_NUM_4), cursor.getString(COL_NUM_5), cursor.getString(COL_NUM_6));
+            }
+        }
+        return history;
+    }
+
     public Integer deleteData(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         int result = db.delete(TABLE_NAME, COL_1+" = ?", new String[]{""+id});
@@ -94,6 +105,12 @@ public class DAOHistory extends SQLiteOpenHelper {
     private Cursor getAllCursorData(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM "+TABLE_NAME+" ORDER BY "+COL_1+" DESC", null);
+        return res;
+    }
+
+    private Cursor getCursorDataById(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE "+COL_1+" = "+id, null);
         return res;
     }
 }
